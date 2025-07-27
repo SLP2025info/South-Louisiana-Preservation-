@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>South Louisiana Rental Guide 2025</title>
+    <style>
+        /*
+        * CSS Styles for the South Louisiana Rental Guide
+        * This section defines the visual appearance and layout of the application.
+        */
+
+        /* --- GLOBAL RESET & BASE STYLES --- */
+        /* This applies to ALL elements on the page (*). It resets default browser margins and paddings for consistency. */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Ensures padding and border are included in the element's total width/height */
+        }
+
+        /* Styles for the main body of the webpage */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Sets a clean, modern font */
+            line-height: 1.6; /* Improves readability of text */
+            color: #333; /* Dark gray text color */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* A nice purple-blue gradient background for the whole page */
+            min-height: 100vh; /* Ensures the background covers the entire viewport height */
+        }
+
+        /* --- LAYOUT COMPONENTS --- */
+        /* Styles for the main content container that holds everything within a central area */
+        .container {
+            max-width: 1200px; /* Limits the maximum width of the content */
+            margin: 0 auto; /* Centers the container horizontally on the page */
+            background: white; /* White background for the content area */
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1); /* Adds a subtle shadow for depth */
+            min-height: 100vh; /* Ensures the container covers at least the full viewport height */
+            position: relative; /* Needed for positioning elements inside it later (like the header animation) */
+        }
+
+        /* Styles for the top header section of the page */
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Dark blue/gray gradient background */
+            color: white; /* White text color */
+            padding: 2rem; /* Spacing inside the header */
+            text-align: center; /* Centers text */
+            position: relative; /* Needed for the floating elements inside */
+            overflow: hidden; /* Hides anything overflowing the header boundaries */
+        }
+
+        /* Pseudo-element for the floating background animation in the header */
+        .header::before {
+            content: ''; /* Required for pseudo-elements */
+            position: absolute; /* Positions relative to the .header */
+            top: 0; left: 0; right: 0; bottom: 0; /* Stretches to cover the entire header */
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>'); /* Embedded SVG for subtle dots */
+            animation: float 20s infinite linear; /* Applies the 'float' animation */
+        }
+
+        /* Defines the 'float' animation for the header background */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); } /* Starts at original position */
+            100% { transform: translateY(-20px) rotate(360deg); } /* Moves up and rotates */
+        }
+
+        /* Styles for the navigation tabs (Apartments, Houses, Resources, Overview) */
+        .nav-tabs {
+            display: flex; /* Uses Flexbox for even spacing of tabs */
+            background: #f8f9fa; /* Light gray background */
+            border-bottom: 3px solid #e9ecef; /* Bottom border for separation */
+            position: sticky; /* Makes the tabs stick to the top when scrolling */
+            top: 0; /* Sticks to the very top */
+            z-index: 100; /* Ensures tabs appear above other content */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Subtle shadow below the tabs */
+        }
+
+        /* Styles for individual navigation buttons/tabs */
+        .nav-tab {
+            flex: 1; /* Each tab takes equal space */
+            padding: 1rem; /* Spacing inside each tab */
+            text-align: center; /* Centers text */
+            background: #f8f9fa; /* Light background */
+            border: none; /* No default button border */
+            cursor: pointer; /* Changes mouse cursor to a pointer on hover */
+            font-size: 1rem; /* Font size */
+            font-weight: 600; /* Semi-bold font */
+            color: #495057; /* Dark gray text */
+            transition: all 0.3s ease; /* Smooth transition for hover effects */
+            position: relative; /* For potential future styling */
+        }
+
+        /* Styles for navigation tabs when hovered over */
+        .nav-tab:hover {
+            background: #e9ecef; /* Slightly darker background */
+            color: #212529; /* Darker text */
+            transform: translateY(-2px); /* Lifts the tab slightly */
+        }
+
+        /* Styles for the currently active (selected) navigation tab */
+        .nav-tab.active {
+            background: #667eea; /* Blue background */
+            color: white; /* White text */
+            transform: translateY(-2px); /* Lifts the tab slightly */
+        }
+
+        /* Styles for the main content area below the tabs */
+        .content {
+            padding: 2rem; /* Spacing inside the content area */
+        }
+
+        /* Styles for each individual tab content section (Apartments, Houses, etc.) */
+        .tab-content {
+            display: none; /* Hides all tab content by default */
+            animation: fadeIn 0.5s ease-in; /* Applies a fade-in animation when shown */
+        }
+
+        /* Styles for the currently active tab content section */
+        .tab-content.active {
+            display: block; /* Shows the active tab content */
+        }
+
+        /* Defines the fade-in animation for tab content */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); } /* Starts transparent and slightly lower */
+            to { opacity: 1; transform: translateY(0); } /* Ends fully opaque at original position */
+        }
+
+        /* --- PROPERTY LISTING STYLES --- */
+        /* Styles for the grid layout of property cards */
+        .property-grid {
+            display: grid; /* Uses CSS Grid for layout */
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Creates responsive columns */
+            gap: 1.5rem; /* Space between grid items */
+            margin-top: 1rem; /* Top margin */
+        }
+
+        /* Styles for individual property cards */
+        .property-card {
+            background: white; /* White background */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1); /* Shadow for depth */
+            padding: 1.5rem; /* Spacing inside the card */
+            transition: all 0.3s ease; /* Smooth transitions for hover effects */
+            border: 1px solid #e9ecef; /* Light gray border */
+            position: relative; /* For the colored top bar */
+            overflow: hidden; /* Ensures content stays within the rounded corners */
+        }
+
+        /* Pseudo-element for the colored bar at the top of property cards */
+        .property-card::before {
+            content: ''; /* Required for pseudo-elements */
+            position: absolute; /* Positions relative to the card */
+            top: 0; left: 0; right: 0; /* Stretches across the top */
+            height: 4px; /* Height of the bar */
+            background: linear-gradient(90deg, #667eea, #764ba2); /* Blue/purple gradient */
+        }
+
+        /* Styles for property cards when hovered over */
+        .property-card:hover {
+            transform: translateY(-8px); /* Lifts the card slightly */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15); /* More prominent shadow */
+        }
+
+        /* Styles for the header section within a property card */
+        .property-header {
+            margin-bottom: 1rem; /* Bottom margin */
+        }
+
+        /* Styles for the property name/title */
+        .property-name {
+            font-size: 1.3rem; /* Larger font size */
+            font-weight: 700; /* Bold font */
+            color: #2c3e50; /* Dark blue text */
+            margin-bottom: 0.5rem; /* Bottom margin */
+        }
+
+        /* Styles for the property address */
+        .property-address {
+            color: #666; /* Gray text */
+            font-size: 0.9rem; /* Smaller font size */
+            display: flex; /* Uses Flexbox for icon and text alignment */
+            align-items: center; /* Vertically aligns items */
+            gap: 0.5rem; /* Space between icon and text */
+        }
+
+        /* Styles for the details section within a property card */
+        .property-details {
+            margin: 1rem 0; /* Top and bottom margin */
+        }
+
+        /* Styles for each row of details (e.g., "Bedrooms: 3") */
+        .detail-row {
+            display: flex; /* Uses Flexbox for label and value alignment */
+            justify-content: space-between; /* Pushes label to left, value to right */
+            align-items: center; /* Vertically aligns items */
+            padding: 0.5rem 0; /* Top and bottom padding */
+            border-bottom: 1px solid #f1f3f4; /* Light gray bottom border */
+        }
+
+        /* Removes the bottom border for the last detail row */
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Styles for the detail label (e.g., "Bedrooms:") */
+        .detail-label {
+            font-weight: 600; /* Semi-bold font */
+            color: #495057; /* Dark gray text */
+        }
+
+        /* Styles for the detail value (e.g., "3") */
+        .detail-value {
+            color: #667eea; /* Blue text */
+            font-weight: 600; /* Semi-bold font */
+        }
+
+        /* Styles for the prominent price display */
+        .price-highlight {
+            background: linear-gradient(135deg, #667eea, #764ba2); /* Blue/purple gradient background */
+            color: white; /* White text */
+            padding: 0.5rem 1rem; /* Spacing inside */
+            border-radius: 25px; /* Highly rounded corners (pill shape) */
+            font-size: 1.1rem; /* Larger font size */
+            font-weight: 700; /* Bold font */
+            text-align: center; /* Centers text */
+            margin: 1rem 0; /* Top and bottom margin */
+        }
+
+        /* Styles for the star rating display */
+        .rating {
+            display: flex; /* Uses Flexbox to align stars and text */
+            align-items: center; /* Vertically aligns items */
+            gap: 0.5rem; /* Space between stars and text */
+            margin: 0.5rem 0; /* Top and bottom margin */
+        }
+
+        /* Styles for the star characters */
+        .stars {
+            color: #ffc107; /* Gold color for stars */
+        }
+
+        /* --- FILTER & SEARCH STYLES --- */
+        /* Styles for the filter section (search bar, max rent, bedrooms) */
+        .filters {
+            background: #f8f9fa; /* Light gray background */
+            padding: 1.5rem; /* Spacing inside */
+            border-radius: 10px; /* Rounded corners */
+            margin-bottom: 2rem; /* Bottom margin */
+            display: flex; /* Uses Flexbox for layout */
+            flex-wrap: wrap; /* Allows items to wrap to the next line on smaller screens */
+            gap: 1rem; /* Space between filter groups */
+            align-items: center; /* Vertically aligns items */
+        }
+
+        /* Styles for each individual filter group (label and input/select) */
+        .filter-group {
+            display: flex; /* Uses Flexbox */
+            flex-direction: column; /* Stacks label and input/select vertically */
+            gap: 0.5rem; /* Space between label and input/select */
+        }
+
+        /* Styles for filter labels */
+        .filter-group label {
+            font-weight: 600; /* Semi-bold font */
+            color: #495057; /* Dark gray text */
+            font-size: 0.9rem; /* Smaller font size */
+        }
+
+        /* Styles for select dropdowns and input fields within filter groups */
+        .filter-group select, .filter-group input {
+            padding: 0.5rem; /* Spacing inside */
+            border: 2px solid #e9ecef; /* Light gray border */
+            border-radius: 8px; /* Rounded corners */
+            font-size: 0.9rem; /* Font size */
+            transition: border-color 0.3s ease; /* Smooth transition for border color on focus */
+        }
+
+        /* Styles for filter inputs/selects when focused (clicked/tabbed into) */
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none; /* Removes default browser outline */
+            border-color: #667eea; /* Changes border color to blue */
+        }
+
+        /* Styles for the search input box */
+        .search-box {
+            flex: 1; /* Allows search box to take up available space */
+            min-width: 250px; /* Minimum width for the search box */
+        }
+
+        /* Styles for the search input field */
+        .search-box input {
+            width: 100%; /* Makes input take full width of its container */
+            padding: 0.75rem; /* Spacing inside */
+            border: 2px solid #e9ecef; /* Light gray border */
+            border-radius: 25px; /* Highly rounded corners (pill shape) */
+            font-size: 1rem; /* Font size */
+            transition: all 0.3s ease; /* Smooth transition for focus effects */
+        }
+
+        /* Styles for the search input field when focused */
+        .search-box input:focus {
+            border-color: #667eea; /* Blue border */
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Subtle blue glow */
+        }
+
+        /* --- GENERAL INFO & RESOURCE SECTIONS --- */
+        /* Styles for general information sections */
+        .info-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef); /* Light gray gradient background */
+            padding: 2rem; /* Spacing inside */
+            border-radius: 15px; /* Rounded corners */
+            margin: 2rem 0; /* Top and bottom margin */
+        }
+
+        /* Styles for headings within info sections */
+        .info-section h3 {
+            color: #2c3e50; /* Dark blue text */
+            margin-bottom: 1rem; /* Bottom margin */
+            font-size: 1.5rem; /* Larger font size */
+        }
+
+        /* Styles for the grid layout of resource links */
+        .resource-links {
+            display: grid; /* Uses CSS Grid for layout */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+            gap: 1rem; /* Space between links */
+            margin-top: 1rem; /* Top margin */
+        }
+
+        /* Styles for individual resource links (buttons/cards) */
+        .resource-link {
+            background: white; /* White background */
+            padding: 1rem; /* Spacing inside */
+            border-radius: 10px; /* Rounded corners */
+            text-decoration: none; /* Removes underline from links */
+            color: #495057; /* Dark gray text */
+            transition: all 0.3s ease; /* Smooth transitions for hover */
+            border: 2px solid transparent; /* Transparent border, will change on hover */
+            display: block; /* Makes the whole card clickable */
+        }
+
+        /* Styles for resource links when hovered over */
+        .resource-link:hover {
+            border-color: #667eea; /* Blue border */
+            transform: translateY(-2px); /* Lifts slightly */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Subtle shadow */
+        }
+
+        /* Styles for the display of zip codes in the header */
+        .zip-codes {
+            display: flex; /* Uses Flexbox */
+            flex-wrap: wrap; /* Allows zip codes to wrap to next line */
+            gap: 0.5rem; /* Space between zip codes */
+            margin: 0.5rem 0; /* Top and bottom margin */
+            justify-content: center; /* Centers zip codes horizontally */
+        }
+
+        /* Styles for individual zip code tags */
+        .zip-code {
+            background: #667eea; /* Blue background */
+            color: white; /* White text */
+            padding: 0.25rem 0.75rem; /* Spacing inside */
+            border-radius: 15px; /* Highly rounded corners */
+            font-size: 0.9rem; /* Smaller font size */
+            font-weight: 600; /* Semi-bold font */
+        }
+
+        /* Styles for the grid of statistics cards */
+        .stats-grid {
+            display: grid; /* Uses CSS Grid */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
+            gap: 1rem; /* Space between cards */
+            margin: 2rem 0; /* Top and bottom margin */
+        }
+
+        /* Styles for individual statistic cards */
+        .stat-card {
+            background: white; /* White background */
+            padding: 1.5rem; /* Spacing inside */
+            border-radius: 10px; /* Rounded corners */
+            text-align: center; /* Centers text */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Shadow for depth */
+        }
+
+        /* Styles for the large number in statistic cards */
+        .stat-number {
+            font-size: 2rem; /* Very large font size */
+            font-weight: 700; /* Bold font */
+            color: #667eea; /* Blue text */
+        }
+
+        /* Styles for the label below the number in statistic cards */
+        .stat-label {
+            color: #666; /* Gray text */
+            font-size: 0.9rem; /* Smaller font size */
+        }
+
+        /* --- RESPONSIVE DESIGN (MEDIA QUERIES) --- */
+        /* These styles apply when the screen width is 768px or less (e.g., on tablets and phones) */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column; /* Stacks navigation tabs vertically */
+            }
+            
+            .nav-tab {
+                padding: 0.75rem; /* Slightly smaller padding for tabs */
+            }
+            
+            .property-grid {
+                grid-template-columns: 1fr; /* Changes property grid to a single column */
+            }
+            
+            .filters {
+                flex-direction: column; /* Stacks filters vertically */
+                align-items: stretch; /* Makes filter items stretch to full width */
+            }
+            
+            .content {
+                padding: 1rem; /* Smaller padding for the main content area */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <div style="background: #8B4513; border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; border: 3px solid #DAA520; position: relative; overflow: hidden;">
+                        <div style="text-align: center; color: #DAA520; font-weight: bold; font-size: 14px; line-height: 1.2; z-index: 2;">
+                            <div>South</div>
+                            <div>Louisiana</div>
+                            <div style="font-size: 12px;">Preservation</div>
+                            <div style="font-size: 10px; margin-top: 4px;">985-991-6301</div>
+                        </div>
+                        <div style="position: absolute; bottom: -10px; left: 0; right: 0; height: 30px; background: linear-gradient(90deg, #4682B4, #5F9EA0); opacity: 0.7;"></div>
+                        <div style="position: absolute; bottom: -5px; left: 10%; right: 10%; height: 8px; background: #228B22; opacity: 0.8; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                <div style="text-align: center; flex: 1; min-width: 300px;">
+                    <h1 style="margin: 0; font-size: 2.5rem;">🏠 South Louisiana Rental Guide</h1>
+                    <p style="margin: 0.5rem 0; font-size: 1.1rem; opacity: 0.9;">Comprehensive rental listings for Houma, Thibodaux, and Bayou Region</p>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">Updated July 26, 2025 | Contact: slp.info.2025@gmail.com</p>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 0.5rem; font-weight: bold; color: rgba(255,255,255,0.9);">🏙️ Houma Metro Area:</div>
+            <div class="zip-codes">
+                <span class="zip-code">70353</span>
+                <span class="zip-code">70357</span>
+                <span class="zip-code">70360</span>
+                <span class="zip-code">70361</span>
+                <span class="zip-code">70363</span>
+                <span class="zip-code">70364</span>
+            </div>
+            
+            <div style="margin-bottom: 0.5rem; font-weight: bold; color: rgba(255,255,255,0.9);">🎓 Thibodaux University Area:</div>
+            <div class="zip-codes">
+                <span class="zip-code">70301</span>
+                <span class="zip-code">70302</span>
+                <span class="zip-code">70310</span>
+            </div>
+            
+            <div style="margin-bottom: 0.5rem; font-weight: bold; color: rgba(255,255,255,0.9);">🌊 Bayou & Lafourche Parish:</div>
+            <div class="zip-codes">
+                <span class="zip-code">70032</span>
+                <span class="zip-code">70037</span>
+                <span class="zip-code">70345</span>
+                <span class="zip-code">70354</span>
+                <span class="zip-code">70355</span>
+                <span class="zip-code">70356</span>
+                <span class="zip-code">70358</span>
+                <span class="zip-code">70373</span>
+                <span class="zip-code">70375</span>
+                <span class="zip-code">70377</span>
+                <span class="zip-code">70380</span>
+                <span class="zip-code">70390</span>
+                <span class="zip-code">70394</span>
+                <span class="zip-code">70395</span>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('apartments')">📍 Apartments</button>
+            <button class="nav-tab" onclick="showTab('houses')">🏘️ Houses</button>
+            <button class="nav-tab" onclick="showTab('resources')">🔗 Resources</button>
+            <button class="nav-tab" onclick="showTab('overview')">📊 Overview</button>
+        </div>
+
+        <div class="content">
+            <div id="apartments" class="tab-content active">
+                <div class="filters">
+                    <div class="search-box">
+                        <input type="text" id="apartmentSearch" placeholder="Search apartments..." onkeyup="filterProperties('apartments')">
+                    </div>
+                    <div class="filter-group">
+                        <label>Max Rent</label>
+                        <select id="apartmentMaxRent" onchange="filterProperties('apartments')">
+                            <option value="">Any</option>
+                            <option value="1000">Under $1,000</option>
+                            <option value="1200">Under $1,200</option>
+                            <option value="1500">Under $1,500</option>
+                            <option value="2000">Under $2,000</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Bedrooms</label>
+                        <select id="apartmentBedrooms" onchange="filterProperties('apartments')">
+                            <option value="">Any</option>
+                            <option value="1">1 Bed</option>
+                            <option value="2">2 Beds</option>
+                            <option value="3">3+ Beds</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="property-grid" id="apartmentGrid"></div>
+            </div>
+
+            <div id="houses" class="tab-content">
+                <div class="filters">
+                    <div class="search-box">
+                        <input type="text" id="houseSearch" placeholder="Search houses..." onkeyup="filterProperties('houses')">
+                    </div>
+                    <div class="filter-group">
+                        <label>Max Rent</label>
+                        <select id="houseMaxRent" onchange="filterProperties('houses')">
+                            <option value="">Any</option>
+                            <option value="1500">Under $1,500</option>
+                            <option value="2000">Under $2,000</option>
+                            <option value="2500">Under $2,500</option>
+                            <option value="3000">Under $3,000</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Bedrooms</label>
+                        <select id="houseBedrooms" onchange="filterProperties('houses')">
+                            <option value="">Any</option>
+                            <option value="1">1 Bed</option>
+                            <option value="2">2 Beds</option>
+                            <option value="3">3 Beds</option>
+                            <option value="4">4+ Beds</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="property-grid" id="houseGrid"></div>
+            </div>
+
+            <div id="resources" class="tab-content">
+                <div class="info-section">
+                    <h3>🔍 Additional Search Resources</h3>
+                    <p>Use these platforms to find even more rental options across South Louisiana:</p>
+                    <div class="resource-links">
+                        <a href="https://www.zillow.com/houma-la/rentals/" class="resource-link" target="_blank">
+                            <strong>Zillow - Houma Area</strong><br>
+                            <small>Filter by zip code for detailed listings</small>
+                        </a>
+                        <a href="https://www.zillow.com/thibodaux-la/rentals/" class="resource-link" target="_blank">
+                            <strong>Zillow - Thibodaux Area</strong><br>
+                            <small>University area rentals</small>
+                        </a>
+                        <a href="https://www.apartments.com/houma-la/" class="resource-link" target="_blank">
+                            <strong>Apartments.com - Houma</strong><br>
+                            <small>Apartment-focused listings</small>
+                        </a>
+                        <a href="https://www.apartments.com/thibodaux-la/" class="resource-link" target="_blank">
+                            <strong>Apartments.com - Thibodaux</strong><br>
+                            <small>Student and family apartments</small>
+                        </a>
+                        <a href="https://www.trulia.com/for_rent/Houma,LA/" class="resource-link" target="_blank">
+                            <strong>Trulia - South Louisiana</strong><br>
+                            <small>Houses and bayou properties</small>
+                        </a>
+                        <a href="https://hotpads.com/houma-la/apartments-for-rent" class="resource-link" target="_blank">
+                            <strong>HotPads</strong><br>
+                            <small>Map-based rental search</small>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>📞 Contact South Louisiana Preservation</h3>
+                    <div style="background: white; padding: 1.5rem; border-radius: 10px; text-align: center; border: 2px solid #DAA520;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="background: #8B4513; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid #DAA520;">
+                                <div style="color: #DAA520; font-weight: bold; font-size: 8px; text-align: center; line-height: 1.1;">
+                                    <div>South</div>
+                                    <div>Louisiana</div>
+                                    <div>Preservation</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.2rem; font-weight: bold; color: #2c3e50;">Need help finding the perfect rental?</div>
+                                <div style="color: #666; margin-top: 0.5rem;">Contact our local experts for personalized assistance</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                            <div>
+                                <strong>📞 Phone:</strong> <a href="tel:985-991-6301" style="color: #667eea; text-decoration: none;">985-991-6301</a>
+                            </div>
+                            <div>
+                                <strong>📧 Email:</strong> <a href="mailto:slp.info.2025@gmail.com" style="color: #667eea; text-decoration: none;">slp.info.2025@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>⚠️ Important Reminders</h3>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 10px; border-left: 4px solid #ff6b6b;">
+                            <strong>🕒 Time-Sensitive:</strong> Rental availability changes extremely quickly in the current market
+                        </li>
+                        <li style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 10px; border-left: 4px solid #4ecdc4;">
+                            <strong>📞 Verify Details:</strong> Always contact property managers directly for current pricing and availability
+                        </li>
+                        <li style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 10px; border-left: 4px solid #45b7d1;">
+                            <strong>🔍 Research Areas:</strong> Visit properties and neighborhoods to ensure they meet your needs
+                        </li>
+                        <li style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 10px; border-left: 4px solid #f9ca24;">
+                            <strong>📋 Application Ready:</strong> Have documents ready including credit reports and references
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="overview" class="tab-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">Apartment Complexes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">25+</div>
+                        <div class="stat-label">House Rentals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">22</div>
+                        <div class="stat-label">Zip Codes Covered</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$635-$3,500</div>
+                        <div class="stat-label">Rent Range</div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>📊 Market Overview</h3>
+                    <p><strong>Price Ranges by Property Type:</strong></p>
+                    <div style="margin: 1rem 0;">
+                        <div style="background: white; padding: 1rem; border-radius: 10px; margin: 0.5rem 0;">
+                            <strong>Apartments:</strong> $635 - $1,745/month (Income-restricted to luxury)
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 10px; margin: 0.5rem 0;">
+                            <strong>Houses:</strong> $1,100 - $3,500/month (2-5 bedrooms)
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 10px; margin: 0.5rem 0;">
+                            <strong>Townhouses:</strong> $1,100 - $1,500/month (2-3 bedrooms)
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 10px; margin: 0.5rem 0;">
+                            <strong>Bayou Properties:</strong> $1,100 - $1,600/month (Often waterfront access)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>🗺️ Expanded Coverage Area</h3>
+                    <p>This guide covers rental properties across <strong>22 zip codes</strong> in South Louisiana:</p>
+                    <div style="margin: 1rem 0;">
+                        <div style="background: white; padding: 1rem; border-radius: 10px; margin: 0.5rem 0;">
+                            <strong>🏙️ Houma Metro (70353, 70357, 70360, 70361, 70363, 70364):</strong> Core urban area with most rental inventory, from affordable to luxury options
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 10px; margin: 0.5rem 0;">
+                            <strong>🎓 Thibodaux Area (70301, 70302, 70310):</strong> University town with student-friendly rentals near Nicholls State University
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 10px; margin: 0.5rem 0;">
+                            <strong>🌊 Bayou Lafourche Region:</strong> Waterfront communities including Des Allemands (70032), Cut Off (70345), Galliano (70354), Larose (70373), Mathews (70375), Raceland (70394), and more
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #4ecdc4, #44a08d); color: white; padding: 1rem; border-radius: 10px; margin: 1rem 0;">
+                        <strong>🎣 Special Features:</strong> Many bayou properties offer boat docks, waterfront access, and proximity to Gulf fishing/shrimping industries. Perfect for those seeking authentic Louisiana bayou living!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /*
+         * JavaScript for the South Louisiana Rental Guide
+         * This section handles dynamic content loading, filtering, and tab switching.
+         */
+
+        /* --- DATA STORAGE (ARRAYS OF OBJECTS) --- */
+        // An array (list) of apartment objects, each object holds details about an apartment.
+        const apartments = [
+            // Each {} is an object representing one apartment.
+            {
+                name: "Houma Highlands (The Palms)",
+                address: "461 S Hollywood Rd, Houma, LA 70360",
+                rent: "$1050-$1435",
+                bedrooms: "1-3",
+                rating: 4.8,
+                reviews: 15,
+                details: { // 'details' is another object nested inside
+                    "Application Fee": "$75",
+                    "Admin Fee": "$125",
+                    "Pet Fee": "$400 (one-time)",
+                    "Pet Rent": "$20/month"
+                }
+            },
+            {
+                name: "Belmere Luxury Apartments",
+                address: "100 Belmere Luxury Ct, Houma, LA 70360",
+                rent: "$1375-$1705",
+                bedrooms: "1-3",
+                rating: 3.9,
+                reviews: 48,
+                details: {
+                    "Security Deposit": "$500",
+                    "Application Fee": "$75",
+                    "Pet Fee": "$500 (non-refundable)",
+                    "Pet Rent": "$25-$75/month"
+                }
+            },
+            {
+                name: "Ansley Place Apartments",
+                address: "100 Ansley Pl Ct, Houma, LA 70360",
+                rent: "$1075-$1489",
+                bedrooms: "1-3",
+                rating: 4.7,
+                reviews: 56,
+                details: {
+                    "Admin Fee": "$125",
+                    "Application Fee": "$75",
+                    "Pet Fee": "$400",
+                    "Pet Rent": "$15/month"
+                }
+            },
+            {
+                name: "Cameron Isles Apartments",
+                address: "100 Cameron Isles Ct, Houma, LA 70360",
+                rent: "$1430-$1745",
+                bedrooms: "2-3",
+                rating: 4.3,
+                reviews: 39,
+                details: {
+                    "Security Deposit": "$500",
+                    "Application Fee": "$75",
+                    "Pet Fee": "$600 (non-refundable)"
+                }
+            },
+            {
+                name: "Crestwood Apartments",
+                address: "700 Levron St, Houma, LA 70360",
+                rent: "$950-$1400",
+                bedrooms: "1-3",
+                rating: null, // 'null' means no value, useful when data is missing
+                reviews: null,
+                details: {
+                    "Application Fee": "$35"
+                }
+            },
+            {
+                name: "Renaissance Oaks",
+                address: "400 Westside Blvd, Houma, LA 70364",
+                rent: "$995-$1150",
+                bedrooms: "2-3",
+                rating: null,
+                reviews: null,
+                details: {
+                    "Security Deposit": "$500",
+                    "Application Fee": "$75"
+                }
+            },
+            {
+                name: "Barataria Station Apartments",
+                address: "200 Southland Cir, Houma, LA 70364",
+                rent: "$1119-$1173",
+                bedrooms: "1-2",
+                rating: null,
+                reviews: null,
+                details: {} // Empty object if no specific details
+            },
+            {
+                name: "Southern Oaks Apartments",
+                address: "Houma, LA 70364",
+                rent: "$990-$1250",
+                bedrooms: "1-2",
+                rating: null,
+                reviews: null,
+                details: {}
+            },
+            {
+                name: "Bonne Terre Village I & II",
+                address: "7614 Main St, Houma, LA 70360",
+                rent: "$635+",
+                bedrooms: "1",
+                rating: null,
+                reviews: null,
+                details: {
+                    "Special": "Income Restricted"
+                }
+            },
+            {
+                name: "Cypress Court Management",
+                address: "405 Westside Blvd #34A, Houma, LA 70364",
+                rent: "Contact for pricing",
+                bedrooms: "Various",
+                rating: 4.0,
+                reviews: 28,
+                details: {
+                    "Pet Deposit": "$300"
+                }
+            },
+            {
+                name: "Turnberry Townhomes",
+                address: "Thibodaux, LA 70301",
+                rent: "$1200-$1450",
+                bedrooms: "2-3",
+                rating: null,
+                reviews: null,
+                details: {
+                    "Location": "Near Nicholls State University",
+                    "Type": "Townhomes",
+                    "Special": "Close to Downtown Thibodaux"
+                }
+            },
+            {
+                name: "612 Locust St Apartments",
+                address: "612 Locust St, Thibodaux, LA 70301",
+                rent: "$950-$1100",
+                bedrooms: "1-2",
+                rating: null,
+                reviews: null,
+                details: {
+                    "Layout": "Open floor plan",
+                    "Laundry": "On-site facility",
+                    "Special": "Spacious bathroom and bedroom"
+                }
+            },
+            {
+                name: "Thibodaux Manor Apartments",
+                address: "Thibodaux, LA 70301",
+                rent: "$850-$1250",
+                bedrooms: "1-3",
+                rating: null,
+                reviews: null,
+                details: {
+                    "Location": "Central Thibodaux",
+                    "Parking": "Available",
+                    "Utilities": "Some included"
+                }
+            },
+            {
+                name: "University Gardens",
+                address: "Near Nicholls State, Thibodaux, LA 70301",
+                rent: "$900-$1200",
+                bedrooms: "1-2",
+                rating: null,
+                reviews: null,
+                details: {
+                    "Special": "Student-friendly",
+                    "Walk to Campus": "Yes",
+                    "Furnished": "Options available"
+                }
+            }
+        ];
+
+        // An array (list) of house objects
+        const houses = [
+            {
+                name: "355 L Kirth Dr",
+                address: "355 L Kirth Dr, Houma, LA 70363",
+                rent: "$1600",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,220",
+                details: {
+                    "Deposit": "$1,600",
+                    "Available": "July 22, 2025"
+                }
+            },
+            {
+                name: "509 S French Quarter Dr",
+                address: "509 S French Quarter Dr, Houma, LA 70364",
+                rent: "$1500",
+                bedrooms: "2",
+                bathrooms: "2",
+                sqft: "1,400",
+                details: {
+                    "Type": "Townhouse",
+                    "Available": "July 19, 2025",
+                    "Application Fee": "$35 (Zillow)"
+                }
+            },
+            {
+                name: "221 N French Quarter Dr",
+                address: "221 N French Quarter Dr, Houma, LA 70364",
+                rent: "$1500",
+                bedrooms: "2",
+                bathrooms: "2.5",
+                sqft: null,
+                details: {
+                    "Type": "Townhouse",
+                    "Available": "July 6, 2025",
+                    "Application Fee": "$35 (Zillow)"
+                }
+            },
+            {
+                name: "513 Kenney St",
+                address: "513 Kenney St, Houma, LA 70364",
+                rent: "$1700",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,754",
+                details: {
+                    "Security Deposit": "$1,500",
+                    "Available": "July 17, 2025"
+                }
+            },
+            {
+                name: "200 Williams Ave",
+                address: "200 Williams Ave, Houma, LA 70364",
+                rent: "$1700",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,300",
+                details: {
+                    "Deposit": "$1,000",
+                    "Available": "June 22, 2025"
+                }
+            },
+            {
+                name: "151 Adley Ave",
+                address: "151 Adley Ave, Houma, LA 70364",
+                rent: "$2200",
+                bedrooms: "4",
+                bathrooms: "2",
+                sqft: "1,906",
+                details: {
+                    "Special": "$200 off first month (ends July 25)",
+                    "Pets": "Not allowed",
+                    "Application Fee": "$35 (Zillow)"
+                }
+            },
+            {
+                name: "1616 Rio Vista Ave",
+                address: "1616 Rio Vista Ave, Houma, LA 70363",
+                rent: "$1800",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,894",
+                details: {
+                    "Available": "July 24, 2025",
+                    "Application Fee": "$25"
+                }
+            },
+            {
+                name: "122 Mall Cir APT A",
+                address: "122 Mall Cir APT A, Houma, LA 70364",
+                rent: "$1100",
+                bedrooms: "2",
+                bathrooms: "1.5",
+                sqft: "1,500",
+                details: {
+                    "Type": "Townhouse",
+                    "Deposit": "$1,100",
+                    "Pets": "Not allowed"
+                }
+            },
+            {
+                name: "348 L Kirth Dr",
+                address: "348 L Kirth Dr, Houma, LA 70363",
+                rent: "$1900",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,762",
+                details: {
+                    "Deposit": "$1,900",
+                    "Available": "July 23, 2025"
+                }
+            },
+            {
+                name: "426 Christopher Dr",
+                address: "426 Christopher Dr, Houma, LA 70364",
+                rent: "$1750",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,431",
+                details: {
+                    "Income Requirement": "3x rent",
+                    "Section 8": "Not accepted",
+                    "Available": "July 24, 2025"
+                }
+            },
+            {
+                name: "300 Suthon Ave",
+                address: "300 Suthon Ave, Houma, LA 70364",
+                rent: "$2900",
+                bedrooms: "5",
+                bathrooms: "3",
+                sqft: "3,056",
+                details: {
+                    "Deposit": "$1,000",
+                    "Original Price": "$3,200",
+                    "Available": "July 24, 2025"
+                }
+            },
+            {
+                name: "428 Sugar Highland Blvd",
+                address: "428 Sugar Highland Blvd, Houma, LA 70360",
+                rent: "$3500",
+                bedrooms: "4",
+                bathrooms: "3",
+                sqft: "2,400",
+                details: {
+                    "Type": "Luxury Home"
+                }
+            },
+            {
+                name: "W Main St Property",
+                address: "1797 W Main St, Schriever, LA 70395",
+                rent: "$1250",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,744",
+                details: {
+                    "Available": "Available Now",
+                    "Contact": "(985) 209-0288",
+                    "Area": "Schriever/Thibodaux"
+                }
+            },
+            {
+                name: "Thibodaux Family Home",
+                address: "Central Thibodaux, LA 70301",
+                rent: "$1500",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,400",
+                details: {
+                    "Available": "Available Now",
+                    "Area": "Near University",
+                    "Parking": "Driveway included"
+                }
+            },
+            {
+                name: "Des Allemands Bayou Home",
+                address: "Des Allemands, LA 70032",
+                rent: "$1100",
+                bedrooms: "2",
+                bathrooms: "1",
+                sqft: "1,200",
+                details: {
+                    "Area": "Bayou Des Allemands",
+                    "Type": "Rural Bayou Setting",
+                    "Fishing": "Water access nearby"
+                }
+            },
+            {
+                name: "Larose Waterfront",
+                address: "Larose, LA 70373",
+                rent: "$1400",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,500",
+                details: {
+                    "Area": "Bayou Lafourche",
+                    "Type": "Waterfront access",
+                    "Special": "Boat dock available",
+                    "Fishing": "Prime fishing location"
+                }
+            },
+            {
+                name: "Cut Off Bayou Property",
+                address: "Cut Off, LA 70345",
+                rent: "$1200",
+                bedrooms: "2",
+                bathrooms: "2",
+                sqft: "1,300",
+                details: {
+                    "Area": "Lower Lafourche Parish",
+                    "Type": "Near Gulf access",
+                    "Special": "Fishing community",
+                    "Commute": "Oil industry jobs nearby"
+                }
+            },
+            {
+                name: "Galliano Gulf Access",
+                address: "Galliano, LA 70354",
+                rent: "$1450",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,600",
+                details: {
+                    "Area": "Lower Bayou Lafourche",
+                    "Type": "Near Gulf of Mexico",
+                    "Special": "Shrimping/Oil industry area",
+                    "Boat": "Deep water access"
+                }
+            },
+            {
+                name: "Raceland Family Home",
+                address: "Raceland, LA 70394",
+                rent: "$1350",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,450",
+                details: {
+                    "Area": "Upper Lafourche Parish",
+                    "Commute": "Easy access to New Orleans",
+                    "Schools": "Good school district",
+                    "Shopping": "Near Thibodaux amenities"
+                }
+            },
+            {
+                name: "Mathews Waterfront Estate",
+                address: "Mathews, LA 70375",
+                rent: "$1700",
+                bedrooms: "4",
+                bathrooms: "3",
+                sqft: "2000",
+                details: {
+                    "Area": "Bayou Lafourche",
+                    "Type": "Waterfront property",
+                    "Special": "Private boat launch",
+                    "Luxury": "Updated interior"
+                }
+            },
+            {
+                name: "Golden Meadow Coastal",
+                address: "Golden Meadow, LA 70357",
+                rent: "$1300",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,400",
+                details: {
+                    "Area": "Coastal Lafourche",
+                    "Type": "Near Port Fourchon",
+                    "Work": "Oil field jobs nearby",
+                    "Gulf": "Close to Gulf access"
+                }
+            },
+            {
+                name: "Lockport Historic",
+                address: "Lockport, LA 70374",
+                rent: "$1250",
+                bedrooms: "3",
+                bathrooms: "2",
+                sqft: "1,350",
+                details: {
+                    "Area": "Historic Lockport",
+                    "Type": "Bayou community",
+                    "Character": "Historic charm",
+                    "Location": "Between Houma & New Orleans"
+                }
+            }
+        ];
+
+        /* --- CORE FUNCTIONS --- */
+        // Function to show the correct tab content and update tab styling
+        function showTab(tabName) {
+            // Get all elements with class 'tab-content' (the content sections)
+            const tabContents = document.querySelectorAll('.tab-content');
+            // Loop through each content section and remove the 'active' class (hides them)
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            // Get all elements with class 'nav-tab' (the navigation buttons)
+            const tabs = document.querySelectorAll('.nav-tab');
+            // Loop through each tab button and remove the 'active' class (resets their styling)
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Add the 'active' class to the content section corresponding to the clicked tab (shows it)
+            document.getElementById(tabName).classList.add('active');
+            
+            // Find the specific navigation button that was clicked and add the 'active' class to it
+            // This updates its visual style to indicate it's the current tab.
+            const clickedButton = document.querySelector(`.nav-tab[onclick*="showTab('${tabName}')"]`);
+            if (clickedButton) { // Check if the button was found
+                clickedButton.classList.add('active');
+            }
+            
+            // This is an optimization: Only load apartment/house data if the tab content is empty.
+            // This prevents the page from re-rendering all cards every time you switch tabs,
+            // which can be slow for very large datasets.
+            if (tabName === 'apartments' && document.getElementById('apartmentGrid').children.length === 0) {
+                loadApartments(); // Call function to load apartment cards
+            } else if (tabName === 'houses' && document.getElementById('houseGrid').children.length === 0) {
+                loadHouses(); // Call function to load house cards
+            }
+        }
+
+        // Function to create an individual property card HTML element
+        function createPropertyCard(property, type) {
+            const card = document.createElement('div'); // Create a new <div> element
+            card.className = 'property-card'; // Assign the CSS class 'property-card' to it
+            
+            // Extract and clean rent values for filtering purposes.
+            // This converts "$1050-$1435" into numerical values.
+            let minRent = 0;
+            let maxRent = Infinity; // Use Infinity if no max rent specified
+            if (property.rent && property.rent !== "Contact for pricing") {
+                const rentParts = property.rent.replace(/[^0-9-]/g, '').split('-'); // Remove non-numeric chars except hyphen
+                minRent = parseInt(rentParts[0]) || 0; // Get the first number as min rent
+                if (rentParts.length > 1) {
+                    maxRent = parseInt(rentParts[1]) || minRent; // If a range, max is the second number
+                } else {
+                    maxRent = minRent; // If single value, min and max are the same
+                }
+            }
+            
+            // Set data attributes on the card for filtering.
+            // These attributes store information that JavaScript can easily read later.
+            card.setAttribute('data-min-rent', minRent);
+            card.setAttribute('data-max-rent', maxRent);
+            
+            // Extract and clean bedroom count for filtering.
+            let bedCount = 0;
+            if (property.bedrooms) {
+                const bedString = property.bedrooms.replace(/\s*beds?|\s*\+/gi, ''); // Remove "beds", "bed", "+"
+                const bedParts = bedString.split('-'); // Split by hyphen for ranges
+                bedCount = parseInt(bedParts[0]) || 0; // Get the first number for filtering
+            }
+            card.setAttribute('data-bedrooms', bedCount); 
+            card.setAttribute('data-raw-bedrooms', property.bedrooms.toLowerCase()); // Store original for specific filters
+
+            card.setAttribute('data-name', property.name.toLowerCase()); // Store name for search filter
+            card.setAttribute('data-address', property.address.toLowerCase()); // Store address for search filter
+            
+            // Generate HTML for star ratings if rating data exists.
+            let ratingHTML = '';
+            if (property.rating && property.reviews) {
+                const stars = '★'.repeat(Math.floor(property.rating)) + '☆'.repeat(5 - Math.floor(property.rating)); // Creates solid and empty stars
+                ratingHTML = `
+                    <div class="rating">
+                        <span class="stars">${stars}</span>
+                        <span>${property.rating} (${property.reviews} reviews)</span>
+                    </div>
+                `;
+            }
+
+            // Generate HTML for additional property details (e.g., "Application Fee").
+            let detailsHTML = '';
+            for (const [key, value] of Object.entries(property.details)) {
+                detailsHTML += `
+                    <div class="detail-row">
+                        <span class="detail-label">${key}:</span>
+                        <span class="detail-value">${value}</span>
+                    </div>
+                `;
+            }
+
+            // Generate HTML specific to apartments or houses (e.g., bathrooms for houses).
+            let propertyInfo = '';
+            if (type === 'house') { // If it's a house, include bedrooms, bathrooms, and square footage
+                propertyInfo = `
+                    <div class="detail-row">
+                        <span class="detail-label">Bedrooms:</span>
+                        <span class="detail-value">${property.bedrooms}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Bathrooms:</span>
+                        <span class="detail-value">${property.bathrooms}</span>
+                    </div>
+                    ${property.sqft ? `
+                    <div class="detail-row">
+                        <span class="detail-label">Square Feet:</span>
+                        <span class="detail-value">${property.sqft}</span>
+                    </div>
+                    ` : ''}
+                `;
+            } else { // If it's an apartment, just include bedrooms for now
+                propertyInfo = `
+                    <div class="detail-row">
+                        <span class="detail-label">Bedrooms:</span>
+                        <span class="detail-value">${property.bedrooms}</span>
+                    </div>
+                `;
+            }
+
+            // Set the inner HTML of the property card using a template literal.
+            // This is where all the assembled pieces come together to form one card.
+            card.innerHTML = `
+                <div class="property-header">
+                    <div class="property-name">${property.name}</div>
+                    <div class="property-address">
+                        📍 ${property.address}
+                    </div>
+                    ${ratingHTML}
+                </div>
+                
+                <div class="price-highlight">
+                    ${property.rent}/month
+                </div>
+                
+                <div class="property-details">
+                    ${propertyInfo}
+                    ${detailsHTML}
+                </div>
+            `;
+            
+            return card; // Return the fully constructed card element
+        }
+
+        // Function to load and display all apartment cards
+        function loadApartments() {
+            const grid = document.getElementById('apartmentGrid'); // Get the HTML element where apartments will go
+            grid.innerHTML = ''; // Clear any existing content in the grid
+            apartments.forEach(apartment => { // Loop through each apartment in the 'apartments' array
+                const card = createPropertyCard(apartment, 'apartment'); // Create a card for the current apartment
+                grid.appendChild(card); // Add the created card to the grid
+            });
+        }
+
+        // Function to load and display all house cards
+        function loadHouses() {
+            const grid = document.getElementById('houseGrid'); // Get the HTML element where houses will go
+            grid.innerHTML = ''; // Clear any existing content in the grid
+            houses.forEach(house => { // Loop through each house in the 'houses' array
+                const card = createPropertyCard(house, 'house'); // Create a card for the current house
+                grid.appendChild(card); // Add the created card to the grid
+            });
+        }
+
+        // Function to filter properties based on search and selected filters
+        function filterProperties(type) {
+            // Get references to the search input, rent filter, bedrooms filter, and the grid
+            const searchInput = document.getElementById(type + 'Search');
+            const maxRentSelect = document.getElementById(type + 'MaxRent');
+            const bedroomsSelect = document.getElementById(type + 'Bedrooms');
+            const grid = document.getElementById(type + 'Grid');
+            
+            // Get the current values from the filter controls
+            const searchTerm = searchInput.value.toLowerCase(); // Convert search term to lowercase for case-insensitive search
+            const maxRentFilter = maxRentSelect.value ? parseInt(maxRentSelect.value) : Infinity; // Get selected max rent, default to Infinity
+            const bedroomsFilter = bedroomsSelect.value; // Get selected bedroom filter
+            
+            // Get all property cards currently displayed in the grid
+            const cards = grid.querySelectorAll('.property-card');
+            
+            // Loop through each property card and determine if it should be shown or hidden
+            cards.forEach(card => {
+                // Get the data attributes stored on each card
+                const cardMinRent = parseInt(card.getAttribute('data-min-rent')) || 0;
+                // const cardMaxRent = parseInt(card.getAttribute('data-max-rent')) || Infinity; // Not strictly needed for this specific rent filter logic
+                const cardBedrooms = parseInt(card.getAttribute('data-bedrooms')) || 0;
+                const cardRawBedrooms = card.getAttribute('data-raw-bedrooms');
+                const cardName = card.getAttribute('data-name');
+                const cardAddress = card.getAttribute('data-address');
+                
+                let show = true; // Assume the card should be shown by default
+                
+                // 1. Search filter: Hide if search term is present but not found in name or address
+                if (searchTerm && !cardName.includes(searchTerm) && !cardAddress.includes(searchTerm)) {
+                    show = false;
+                }
+                
+                // 2. Max Rent filter: Hide if the property's minimum rent is greater than the selected max rent filter
+                if (maxRentFilter !== Infinity) {
+                    if (cardMinRent > maxRentFilter) {
+                        show = false;
+                    }
+                }
+                
+                // 3. Bedrooms filter: Apply specific logic based on selected bedroom count
+                if (bedroomsFilter) {
+                    if (bedroomsFilter === '3' && type === 'apartment') {
+                        // For apartments, "3+ Beds" means 3 or more bedrooms
+                        if (cardBedrooms < 3) {
+                            show = false;
+                        }
+                    } else if (bedroomsFilter === '4' && type === 'house') {
+                        // For houses, "4+ Beds" means 4 or more bedrooms
+                        if (cardBedrooms < 4) {
+                            show = false;
+                        }
+                    } else {
+                        // For exact matches (1, 2, 3 beds), check if the original raw bedroom string contains the filter value
+                        // This handles cases like a "1-2" bedroom apartment matching a "1 Bed" filter.
+                        if (cardRawBedrooms.indexOf(bedroomsFilter) === -1) {
+                            show = false;
+                        }
+                    }
+                }
+                
+                // Set the display style of the card based on the 'show' variable
+                card.style.display = show ? 'block' : 'none'; // 'block' makes it visible, 'none' hides it
+            });
+        }
+
+        /* --- INITIALIZATION --- */
+        // This code runs when the entire HTML document has been loaded and parsed by the browser.
+        document.addEventListener('DOMContentLoaded', function() {
+            loadApartments(); // Initially load the apartment listings when the page loads
+        });
+    </script>
+</body>
+</html>
+
